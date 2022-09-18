@@ -1,18 +1,43 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MonkeyFinances.Identidade.Api.Data;
+using MonkeyFinances.Identidade.Api.Entensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Adição dos contextos
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("IdentidadeConnection")));
 
-//Configuração Identity
 builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddErrorDescriber<IdentityPortugueseErrors>();
+
+var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
+builder.Services.Configure<JwtSettings>(jwtSettingsSection);
+var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(bearerOptions =>
+{
+    bearerOptions.RequireHttpsMetadata = true;
+    bearerOptions.SaveToken = true;
+    bearerOptions.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidAudience = jwtSettings.ValidAt,
+        ValidIssuer = jwtSettings.Issuer
+    };
+});
 
 builder.Services.AddControllers();
 

@@ -1,74 +1,26 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MonkeyFinances.Identidade.Api.Entensions;
 using MonkeyFinances.Identidade.Api.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
-namespace MonkeyFinances.Identidade.Api.Controllers
+namespace MonkeyFinances.Identidade.Api.Services
 {
-    [ApiController]
-    [Route("api/identidade")]
-    public class AuthController : MainController
+    public class TokenService
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtSettings _jwtSettings;
 
-        public AuthController(SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
-            IOptions<JwtSettings> jwtSettings)
+        public TokenService(UserManager<IdentityUser> userManager,
+                                    IOptions<JwtSettings> jwtSettings)
         {
-            _signInManager = signInManager;
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
         }
-        [HttpPost("register-user")]
-        public async Task<ActionResult> CadastrarUsuario([FromBody] RegisterUserModel registerUser)
-        {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-            var user = new IdentityUser
-            {
-                UserName = registerUser.Email,
-                Email = registerUser.Email,
-                EmailConfirmed = true
-            };
-
-            var result = await _userManager.CreateAsync(user, registerUser.Password);
-            if (result.Succeeded)
-            {
-                return CustomResponse(await GenerateJwt(registerUser.Email));
-            }
-
-            foreach (var error in result.Errors)
-            {
-                AddErrors(error.Description);
-            }
-            return CustomResponse();
-        }
-        [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody] LoginModel login)
-        {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-            var result = await _signInManager.PasswordSignInAsync(login.Email, login.Password,
-                false, true);
-
-            if (result.Succeeded) return CustomResponse(await GenerateJwt(login.Email));
-            if (result.IsLockedOut)
-            {
-                AddErrors("Usuário temporariamente bloqueado por tentativas inválidas");
-                return CustomResponse();
-            }
-            AddErrors("Usuário ou senha incorretos");
-            return CustomResponse();
-        }
-
-        private async Task<UserModel.UserLoginResponse> GenerateJwt(string email)
+        public async Task<UserModel.UserLoginResponse> GenerateJwt(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
