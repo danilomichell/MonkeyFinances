@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MonkeyFinances.Identidade.Api.Data;
 
-namespace MonkeyFinances.Identidade.Api.Entensions
+namespace MonkeyFinances.Identidade.Api.Extensions
 {
     public static class IdentityExtensions
     {

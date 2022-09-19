@@ -5,6 +5,9 @@ namespace MonkeyFinances.Identidade.Api.Models
     public class RegisterUserModel
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [StringLength(100, ErrorMessage = "O campo {0} deve ter {1} caracteres")]
+        public string Nome { get; private set; } = null!;
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [EmailAddress(ErrorMessage = "O campo {0} está em formato inválido")]
         public string Email { get; set; } = null!;
         [Required(ErrorMessage = "O campo {0} é obrigatório")]

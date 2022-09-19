@@ -5,9 +5,9 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
-using MonkeyFinances.Identidade.Api.Extensions;
+using MonkeyFinances.Financas.Api.Extensions;
 
-namespace MonkeyFinances.Identidade.Api.Filters
+namespace MonkeyFinances.Financas.Api.Filters
 {
     public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
@@ -35,7 +35,7 @@ namespace MonkeyFinances.Identidade.Api.Filters
                                   $"\"status\": {(int)HttpStatusCode.BadRequest},\r\n  " +
                                   "\"errors\": {\r\n    " +
                                   "\"Mensagens\": [\r\n      " +
-                                  $"\"{mensagem.ToString()}\"\r\n    ]\r\n  " +
+                                  $"\"{mensagem}\"\r\n    ]\r\n  " +
                                   "}\r\n}", 
                         StatusCode = (int)HttpStatusCode.BadRequest,
                         ContentType = "application/json"

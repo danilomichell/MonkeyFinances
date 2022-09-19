@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using MonkeyFinances.Identidade.Api.Entensions;
+using MonkeyFinances.Identidade.Api.Extensions;
 using MonkeyFinances.Identidade.Api.Models;
 
 namespace MonkeyFinances.Identidade.Api.Services

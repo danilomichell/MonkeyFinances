@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using MonkeyFinances.Identidade.Api.Data;
 using MonkeyFinances.Identidade.Api.Filters;
 using MonkeyFinances.Identidade.Api.Services;
 
-namespace MonkeyFinances.Identidade.Api.Entensions
+namespace MonkeyFinances.Identidade.Api.Extensions
 {
     public static class DependencyInjectionExtensions
     {

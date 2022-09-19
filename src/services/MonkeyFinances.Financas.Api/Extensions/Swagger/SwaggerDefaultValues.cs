@@ -6,7 +6,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
  * https://github.com/microsoft/aspnet-api-versioning
  */
 
-namespace MonkeyFinances.Identidade.Api.Entensions.Swagger
+namespace MonkeyFinances.Financas.Api.Extensions.Swagger
 {
     /// <summary>
     /// Represents the Swagger/Swashbuckle operation filter used to document the implicit API version parameter.

@@ -1,9 +1,9 @@
 ﻿using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
-using MonkeyFinances.Identidade.Api.Entensions.Swagger;
+using MonkeyFinances.Financas.Api.Extensions.Swagger;
 using System.Reflection;
 
-namespace MonkeyFinances.Identidade.Api.Entensions
+namespace MonkeyFinances.Financas.Api.Extensions
 {
     /// <summary>
     /// Extensões do Swagger

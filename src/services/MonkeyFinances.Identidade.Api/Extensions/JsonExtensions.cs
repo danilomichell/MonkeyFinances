@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace MonkeyFinances.Identidade.Api.Entensions
+namespace MonkeyFinances.Identidade.Api.Extensions
 {
     /// <summary>
     /// Extensões de serialização json

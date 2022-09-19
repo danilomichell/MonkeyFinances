@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace MonkeyFinances.Identidade.Api.Entensions.Swagger
+namespace MonkeyFinances.Financas.Api.Extensions.Swagger
 {
     /// <summary>
     /// Filtro para a ui do swagger exibir o ícone (e enviar o token) de autenticação nos endpoints necessários

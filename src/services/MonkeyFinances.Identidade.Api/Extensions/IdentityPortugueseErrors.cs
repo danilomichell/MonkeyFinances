@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace MonkeyFinances.Identidade.Api.Entensions
+namespace MonkeyFinances.Identidade.Api.Extensions
 {
     public class IdentityPortugueseErrors : IdentityErrorDescriber
     {

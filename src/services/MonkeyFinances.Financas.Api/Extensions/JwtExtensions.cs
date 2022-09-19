@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace MonkeyFinances.Identidade.Api.Entensions
+namespace MonkeyFinances.Financas.Api.Extensions
 {
     public static class JwtExtensions
     {

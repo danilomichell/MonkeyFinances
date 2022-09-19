@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using MonkeyFinances.Identidade.Api.Entensions;
+using MonkeyFinances.Identidade.Api.Extensions;
 using MonkeyFinances.Identidade.Api.Filters;
 using MonkeyFinances.Identidade.Api.Models;
 using MonkeyFinances.Identidade.Api.Services;

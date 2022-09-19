@@ -1,4 +1,4 @@
-﻿namespace MonkeyFinances.Identidade.Api.Entensions
+﻿namespace MonkeyFinances.Identidade.Api.Extensions
 {
     public class JwtSettings
     {

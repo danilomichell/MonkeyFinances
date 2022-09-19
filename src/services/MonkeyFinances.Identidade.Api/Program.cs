@@ -1,4 +1,4 @@
-using MonkeyFinances.Identidade.Api.Entensions;
+using MonkeyFinances.Identidade.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
