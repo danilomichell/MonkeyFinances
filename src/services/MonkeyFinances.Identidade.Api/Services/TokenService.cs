@@ -9,7 +9,7 @@ using MonkeyFinances.Identidade.Api.Models;
 
 namespace MonkeyFinances.Identidade.Api.Services
 {
-    public class TokenService
+    public class TokenService : ITokenService
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtSettings _jwtSettings;
@@ -20,10 +20,18 @@ namespace MonkeyFinances.Identidade.Api.Services
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
         }
-        public async Task<UserModel.UserLoginResponse> GenerateJwt(string email)
+        public async Task<UserLoginResponse> GenerateJwt(string email)
         {
+            throw new InvalidOperationException("edfdsaegvsrgbrsfb");
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
+            var identityClaims = await GetClaimsUser(claims, user);
+            var encodedToken = EncodeToken(identityClaims); 
+            return GetResponseToken(encodedToken, user, claims);
+        }
+
+        private async Task<ClaimsIdentity> GetClaimsUser(ICollection<Claim> claims, IdentityUser user)
+        {
             var userRoles = await _userManager.GetRolesAsync(user);
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
@@ -40,6 +48,11 @@ namespace MonkeyFinances.Identidade.Api.Services
             var identityClaims = new ClaimsIdentity();
             identityClaims.AddClaims(claims);
 
+            return identityClaims;
+        }
+
+        private string EncodeToken(ClaimsIdentity identityClaims)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
@@ -51,16 +64,20 @@ namespace MonkeyFinances.Identidade.Api.Services
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             });
 
-            var encodedToken = tokenHandler.WriteToken(token);
-            return new UserModel.UserLoginResponse
+            return tokenHandler.WriteToken(token);
+        }
+
+        private UserLoginResponse GetResponseToken(string encodedToken, IdentityUser user, IEnumerable<Claim> claims)
+        {
+            return new UserLoginResponse
             {
                 AccesToken = encodedToken,
                 ExpiresIn = TimeSpan.FromHours(_jwtSettings.ExpirationtHour).TotalSeconds,
-                UserToken = new UserModel.UserToken
+                UserToken = new UserToken
                 {
                     Id = user.Id,
                     Email = user.Email,
-                    Claims = claims.Select(c => new UserModel.UserClaim
+                    Claims = claims.Select(c => new UserClaim
                     {
                         Type = c.Type,
                         Value = c.Value

@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using MonkeyFinances.Identidade.Api.Entensions;
+using MonkeyFinances.Identidade.Api.Filters;
 using MonkeyFinances.Identidade.Api.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using MonkeyFinances.Identidade.Api.Services;
 
 namespace MonkeyFinances.Identidade.Api.Controllers
 {
+    [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
     [ApiController]
     [Route("api/identidade")]
     public class AuthController : MainController
@@ -17,15 +16,25 @@ namespace MonkeyFinances.Identidade.Api.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly ITokenService _tokenService;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            IOptions<JwtSettings> jwtSettings)
+            IOptions<JwtSettings> jwtSettings,
+            ITokenService tokenService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
+            _tokenService = tokenService;
         }
+
+        ///  <summary>
+        ///  Endpoint responsável por cadastrar o usuário 
+        /// </summary>
+        ///  <param name = "registerUser" />
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("register-user")]
         public async Task<ActionResult> CadastrarUsuario([FromBody] RegisterUserModel registerUser)
         {
@@ -41,7 +50,7 @@ namespace MonkeyFinances.Identidade.Api.Controllers
             var result = await _userManager.CreateAsync(user, registerUser.Password);
             if (result.Succeeded)
             {
-                return CustomResponse(await GenerateJwt(registerUser.Email));
+                return CustomResponse(await _tokenService.GenerateJwt(registerUser.Email));
             }
 
             foreach (var error in result.Errors)
@@ -50,6 +59,12 @@ namespace MonkeyFinances.Identidade.Api.Controllers
             }
             return CustomResponse();
         }
+        /// <summary>
+        /// Endpoint responsável por logar
+        /// </summary>
+        /// <param name="login"></param> 
+        [ProducesResponseType(typeof(UserLoginResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginModel login)
         {
@@ -58,7 +73,7 @@ namespace MonkeyFinances.Identidade.Api.Controllers
             var result = await _signInManager.PasswordSignInAsync(login.Email, login.Password,
                 false, true);
 
-            if (result.Succeeded) return CustomResponse(await GenerateJwt(login.Email));
+            if (result.Succeeded) return CustomResponse(await _tokenService.GenerateJwt(login.Email));
             if (result.IsLockedOut)
             {
                 AddErrors("Usuário temporariamente bloqueado por tentativas inválidas");
@@ -67,58 +82,5 @@ namespace MonkeyFinances.Identidade.Api.Controllers
             AddErrors("Usuário ou senha incorretos");
             return CustomResponse();
         }
-
-        private async Task<UserModel.UserLoginResponse> GenerateJwt(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            var claims = await _userManager.GetClaimsAsync(user);
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
-
-            foreach (var userRole in userRoles)
-            {
-                claims.Add(new Claim("role", userRole));
-            }
-
-            var identityClaims = new ClaimsIdentity();
-            identityClaims.AddClaims(claims);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
-            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
-            {
-                Issuer = _jwtSettings.Issuer,
-                Audience = _jwtSettings.ValidAt,
-                Subject = identityClaims,
-                Expires = DateTime.UtcNow.AddHours(_jwtSettings.ExpirationtHour),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            });
-
-            var encodedToken = tokenHandler.WriteToken(token);
-            return new UserModel.UserLoginResponse
-            {
-                AccesToken = encodedToken,
-                ExpiresIn = TimeSpan.FromHours(_jwtSettings.ExpirationtHour).TotalSeconds,
-                UserToken = new UserModel.UserToken
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    Claims = claims.Select(c => new UserModel.UserClaim
-                    {
-                        Type = c.Type,
-                        Value = c.Value
-                    })
-                }
-            };
-        }
-
-        private static long ToUnixEpochDate(DateTime date)
-            => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
-                .TotalSeconds);
     }
 }
