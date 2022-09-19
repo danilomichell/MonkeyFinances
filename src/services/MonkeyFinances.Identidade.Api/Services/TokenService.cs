@@ -22,11 +22,10 @@ namespace MonkeyFinances.Identidade.Api.Services
         }
         public async Task<UserLoginResponse> GenerateJwt(string email)
         {
-            throw new InvalidOperationException("edfdsaegvsrgbrsfb");
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
             var identityClaims = await GetClaimsUser(claims, user);
-            var encodedToken = EncodeToken(identityClaims); 
+            var encodedToken = EncodeToken(identityClaims);
             return GetResponseToken(encodedToken, user, claims);
         }
 
