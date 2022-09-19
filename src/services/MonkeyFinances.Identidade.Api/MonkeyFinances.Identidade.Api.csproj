@@ -4,6 +4,11 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+		<UserSecretsId>9679f0fd-30cf-4a92-baaf-9759cdc2c1a0</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..\..</DockerfileContext>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -27,12 +32,5 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\building-blocks\MonkeyFinances.Core\MonkeyFinances.Core.csproj" />
 	</ItemGroup>
-	<PropertyGroup>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<NoWarn>$(NoWarn);1591</NoWarn>
-		<DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
-		<UserSecretsId>325cbc11-751e-4611-93d6-11903c298ee7</UserSecretsId>
-		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerfileContext>..\..</DockerfileContext>
-	</PropertyGroup>
+
 </Project>

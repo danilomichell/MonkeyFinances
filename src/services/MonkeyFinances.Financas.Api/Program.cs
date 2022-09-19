@@ -1,28 +1,15 @@
 using MonkeyFinances.Core.Identidade;
-using MonkeyFinances.Financas.Api.Extensions;
+using MonkeyFinances.Financas.Api.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddGeneralSettings()
-    .AddDbContext(builder.Configuration)
-    .AddServiceDependencyInjection()
-    .AddJwt(builder.Configuration)
-    .AddCustomSwaggerGen()
-    .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddControllers()
-    .AddCustomJsonOptions();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddApiConfiguration(builder.Configuration);
+
+builder.Services.AddJwtConfiguration(builder.Configuration);
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("Total",
-        build =>
-            build
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
-});
+builder.Services.AddSwaggerConfiguration();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,8 +21,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-app.UseAuthentication();
+app.UseCors("Total");
+app.UseAuthConfiguration();
 
 app.MapControllers();
 

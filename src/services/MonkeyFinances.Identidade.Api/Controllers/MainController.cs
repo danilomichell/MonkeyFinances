@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MonkeyFinances.Identidade.Api.Controllers
 {
     [ApiController]
-    public class MainController : Controller
+    public abstract class MainController : Controller
     {
         protected ICollection<string> Erros = new List<string>();
 
-        protected ActionResult CustomResponse(object? result = null)
+        protected ActionResult CustomResponse(object result = null)
         {
-            if (ValidOperation())
+            if (OperacaoValida())
             {
                 return Ok(result);
             }
@@ -23,24 +23,26 @@ namespace MonkeyFinances.Identidade.Api.Controllers
 
         protected ActionResult CustomResponse(ModelStateDictionary modelState)
         {
-            var errors = modelState.Values.SelectMany(e => e.Errors);
-            foreach (var error in errors)
+            var erros = modelState.Values.SelectMany(e => e.Errors);
+            foreach (var erro in erros)
             {
-                AddErrors(error.ErrorMessage);
+                AdicionarErroProcessamento(erro.ErrorMessage);
             }
 
             return CustomResponse();
         }
-        protected bool ValidOperation()
+
+        protected bool OperacaoValida()
         {
             return !Erros.Any();
         }
 
-        protected void AddErrors(string erro)
+        protected void AdicionarErroProcessamento(string erro)
         {
             Erros.Add(erro);
         }
-        protected void ClearErrors()
+
+        protected void LimparErrosProcessamento()
         {
             Erros.Clear();
         }
