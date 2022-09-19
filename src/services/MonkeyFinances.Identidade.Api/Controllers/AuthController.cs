@@ -14,18 +14,15 @@ namespace MonkeyFinances.Identidade.Api.Controllers
     public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly JwtSettings _jwtSettings;
+        private readonly UserManager<IdentityUser> _userManager; 
         private readonly ITokenService _tokenService;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
-            IOptions<JwtSettings> jwtSettings,
+            UserManager<IdentityUser> userManager, 
             ITokenService tokenService)
         {
             _signInManager = signInManager;
-            _userManager = userManager;
-            _jwtSettings = jwtSettings.Value;
+            _userManager = userManager; 
             _tokenService = tokenService;
         }
 

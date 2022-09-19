@@ -1,3 +1,4 @@
+using MonkeyFinances.Core.Identidade;
 using MonkeyFinances.Financas.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

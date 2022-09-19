@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace MonkeyFinances.Financas.Api.Extensions
+namespace MonkeyFinances.Core.Identidade
 {
     public static class JwtExtensions
     {
