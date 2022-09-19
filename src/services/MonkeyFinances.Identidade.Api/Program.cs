@@ -13,7 +13,15 @@ builder.Services.AddGeneralSettings()
 
 builder.Services.AddControllers()
     .AddCustomJsonOptions();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Total",
+        build =>
+            build
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+});
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
