@@ -27,4 +27,8 @@
     <ProjectReference Include="..\..\building-blocks\MonkeyFinances.Core\MonkeyFinances.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\Events\" />
+  </ItemGroup>
+
 </Project>

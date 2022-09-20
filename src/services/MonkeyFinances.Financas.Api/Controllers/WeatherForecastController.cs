@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MonkeyFinances.Core.Controller;
 using MonkeyFinances.Core.Mediator;
 using MonkeyFinances.Financas.Api.Application;
+using MonkeyFinances.Financas.Api.Application.Commands;
 using MonkeyFinances.Financas.Api.Models;
 
 namespace MonkeyFinances.Financas.Api.Controllers
