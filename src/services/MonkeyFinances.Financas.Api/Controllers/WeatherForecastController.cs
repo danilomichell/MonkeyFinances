@@ -1,29 +1,36 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MonkeyFinances.Core.Controller;
+using MonkeyFinances.Core.Mediator;
+using MonkeyFinances.Financas.Api.Application;
+using MonkeyFinances.Financas.Api.Models;
 
 namespace MonkeyFinances.Financas.Api.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : MainController
     {
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IMediatorHandler _mediatorHandler;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(IMediatorHandler mediatorHandler)
         {
-            _logger = logger;
+            _mediatorHandler = mediatorHandler;
         }
         [AllowAnonymous]
-        [HttpGet("Teste")]
-        public async Task<IActionResult> Teste()
+        [HttpPost("Teste")]
+        public async Task<IActionResult> Teste([FromBody] UserCreate user)
         {
-            return Ok();
+            var resultado = await _mediatorHandler.EnviarComando(
+                new CreateUserCommand(new Guid(user.Id), user.Nome, user.Email));
+
+            return CustomResponse(resultado);
         }
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()

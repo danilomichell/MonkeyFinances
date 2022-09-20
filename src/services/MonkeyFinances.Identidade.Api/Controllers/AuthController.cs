@@ -6,8 +6,9 @@ using MonkeyFinances.Core.Identidade;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
+using MonkeyFinances.Core.Controller;
 using MonkeyFinances.Identidade.Api.Models;
+using MonkeyFinances.Identidade.Api.Services;
 
 namespace MonkeyFinances.Identidade.Api.Controllers
 {
@@ -17,16 +18,18 @@ namespace MonkeyFinances.Identidade.Api.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
+        private readonly IUserService _userService;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
-                              IOptions<AppSettings> appSettings)
+                              IOptions<AppSettings> appSettings,
+                              IUserService userService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appSettings = appSettings.Value;
+            _userService = userService;
         }
-        [Authorize]
         [HttpPost("nova-conta")]
         public async Task<ActionResult> Registrar(UsuarioRegistro usuarioRegistro)
         {
@@ -43,6 +46,24 @@ namespace MonkeyFinances.Identidade.Api.Controllers
 
             if (result.Succeeded)
             {
+                var userCreated = await _userManager.FindByEmailAsync(usuarioRegistro.Email);
+                var creteUser = await _userService.CreateUser(
+                    new UsuarioRegistroApiFinancas
+                    {
+                        Id = userCreated.Id,
+                        Email = usuarioRegistro.Email,
+                        Nome = usuarioRegistro.Nome
+                    });
+                if (creteUser.Errors is not null)
+                {
+                    await _userManager.DeleteAsync(userCreated);
+                    foreach (var error in creteUser.Errors.Mensagens)
+                    {
+                        AdicionarErroProcessamento(error);
+                    }
+
+                    return CustomResponse();
+                }
                 return CustomResponse(await GerarJwt(usuarioRegistro.Email));
             }
 

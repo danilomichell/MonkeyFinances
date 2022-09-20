@@ -15,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Financas", "Financas", "{77
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0A49F182-7345-463D-A729-A8C0EB939CFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonkeyFinances.Identidade.Api", "src\services\MonkeyFinances.Identidade.Api\MonkeyFinances.Identidade.Api.csproj", "{0F1ABB72-56C6-4BE0-9AEA-83C426857515}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonkeyFinances.Identidade.Api", "src\services\MonkeyFinances.Identidade.Api\MonkeyFinances.Identidade.Api.csproj", "{0F1ABB72-56C6-4BE0-9AEA-83C426857515}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonkeyFinances.Core", "src\building-blocks\MonkeyFinances.Core\MonkeyFinances.Core.csproj", "{551FC3A5-3DF2-4AA9-BBB5-501A9E398334}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonkeyFinances.Core", "src\building-blocks\MonkeyFinances.Core\MonkeyFinances.Core.csproj", "{551FC3A5-3DF2-4AA9-BBB5-501A9E398334}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonkeyFinances.Financas.Api", "src\services\MonkeyFinances.Financas.Api\MonkeyFinances.Financas.Api.csproj", "{DC3419C5-AA29-48CB-888B-1711520F0A11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonkeyFinances.Financas.Api", "src\services\MonkeyFinances.Financas.Api\MonkeyFinances.Financas.Api.csproj", "{DC3419C5-AA29-48CB-888B-1711520F0A11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

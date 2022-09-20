@@ -18,7 +18,12 @@ namespace MonkeyFinances.Identidade.Api.Models
         [Compare("Senha", ErrorMessage = "As senhas não conferem.")]
         public string SenhaConfirmacao { get; set; }
     }
-
+    public class UsuarioRegistroApiFinancas
+    {
+        public string Id { get; set; }
+        public string Nome { get; set; }
+        public string Email { get; set; }
+    }
     public class UsuarioLogin
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
