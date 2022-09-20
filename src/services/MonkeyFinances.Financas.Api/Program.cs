@@ -1,10 +1,11 @@
 using MonkeyFinances.Core.Identidade;
 using MonkeyFinances.Financas.Api.Configuration;
+using MonkeyFinances.Financas.Api.Configuration.Mediator;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApiConfiguration(builder.Configuration);
-
+builder.Services.AddMediatR();
 builder.Services.AddJwtConfiguration(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
