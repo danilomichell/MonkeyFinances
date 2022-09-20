@@ -1,4 +1,7 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace MonkeyFinances.Financas.Api.Configuration
 {
@@ -8,13 +11,7 @@ namespace MonkeyFinances.Financas.Api.Configuration
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo()
-                {
-                    Title = "NerdStore Enterprise Catálogo API",
-                    Description = "Esta API faz parte do curso ASP.NET Core Enterprise Applications.",
-                    Contact = new OpenApiContact() { Name = "Eduardo Pires", Email = "contato@desenvolvedor.io" },
-                    License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
-                });
+                c.OperationFilter<BearerAuthenticationFilter>();
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -25,8 +22,28 @@ namespace MonkeyFinances.Financas.Api.Configuration
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey
                 });
+            });
+            services.AddFluentValidationRulesToSwagger();
+        }
+    }
+    public class BearerAuthenticationFilter : IOperationFilter
+    {
+        /// <summary>
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="context"></param>
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var allowAnon = context.ApiDescription.CustomAttributes()
+                .Any(attr => attr.GetType() == typeof(AllowAnonymousAttribute));
+            var authorize = context.ApiDescription.CustomAttributes()
+                .Any(attr => attr.GetType() == typeof(AuthorizeAttribute));
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            if (allowAnon || !authorize) return;
+
+            operation.Security = new List<OpenApiSecurityRequirement>
+            {
+                new()
                 {
                     {
                         new OpenApiSecurityScheme
@@ -37,11 +54,10 @@ namespace MonkeyFinances.Financas.Api.Configuration
                                 Id = "Bearer"
                             }
                         },
-                        new string[] {}
+                        new List<string>()
                     }
-                });
-
-            });
+                }
+            };
         }
     }
 }

@@ -19,7 +19,12 @@ namespace MonkeyFinances.Financas.Api.Controllers
         {
             _logger = logger;
         }
-
+        [AllowAnonymous]
+        [HttpGet("Teste")]
+        public async Task<IActionResult> Teste()
+        {
+            return Ok();
+        }
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
