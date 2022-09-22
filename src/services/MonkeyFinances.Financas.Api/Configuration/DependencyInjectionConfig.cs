@@ -14,7 +14,7 @@ namespace MonkeyFinances.Financas.Api.Configuration
             services.AddScoped<IMediatorHandler, MediatorHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, ValidationResult>, CreateUserHandler>();
 
-            //services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
+            //services.AddScoped<INotificationHandler<CreateUserEvent>, ClienteEventHandler>();
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<FinancasContext>();

@@ -1,7 +1,5 @@
-﻿using System.Net;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
-using FluentValidation.Results;
 using MonkeyFinances.Identidade.Api.Models;
 
 namespace MonkeyFinances.Identidade.Api.Services
@@ -19,7 +17,7 @@ namespace MonkeyFinances.Identidade.Api.Services
             _httpClient = httpClient;
         }
 
-        private const string Url = "https://localhost:7001/WeatherForecast/Teste";
+        private const string Url = "https://localhost:7001/User/CreateUser";
         public async Task<ResponseResult> CreateUser(UsuarioRegistroApiFinancas registroApiFinancas)
         {
             var userContent = new StringContent(

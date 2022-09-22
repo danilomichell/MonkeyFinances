@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddIdentityConfiguration();
 builder.Services.AddHttpClient<IUserService, UserService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddApiConfiguration();
 
 builder.Services.AddSwaggerConfiguration();

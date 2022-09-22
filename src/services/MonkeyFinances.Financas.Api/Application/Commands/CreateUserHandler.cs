@@ -18,12 +18,14 @@ namespace MonkeyFinances.Financas.Api.Application.Commands
         public async Task<ValidationResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             if (!request.EhValido()) return request.ValidationResult;
-            _userRepository.Adicionar(new User
+            var user = new User
             {
                 Id = request.Id,
                 Email = request.Email,
                 Name = request.Nome
-            });
+            };
+            _userRepository.Adicionar(user);
+            //user.AdicionarEvento(new User);
             return await PersistirDados(_userRepository.UnitOfWork);
         }
     }
