@@ -1,30 +1,37 @@
-﻿using System.Text;
+﻿using System.Net.Http;
+using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
+using MonkeyFinances.Core.Identidade;
+using MonkeyFinances.Identidade.Api.Extensions;
 using MonkeyFinances.Identidade.Api.Models;
 
 namespace MonkeyFinances.Identidade.Api.Services
 {
     public interface IUserService
     {
-        Task<ResponseResult> CreateUser(UsuarioRegistroApiFinancas usuarioRegistro);
+        Task<ResponseResult> CreateUser(UsuarioRegistroApiFinancas registroApiFinancas);
     }
 
     public class UserService : IUserService
     {
-        private readonly HttpClient _httpClient;
-        public UserService(HttpClient httpClient)
+        private readonly IHttpClientFactory _httpClientfactory;
+        private readonly ApiFinancas _apiFinancas;
+        public UserService(IHttpClientFactory httpClientfactory,
+            IOptions<ApiFinancas> apiFinancas)
         {
-            _httpClient = httpClient;
+            _httpClientfactory = httpClientfactory;
+            _apiFinancas = apiFinancas.Value;
         }
 
-        private const string Url = "https://localhost:7001/User/CreateUser";
         public async Task<ResponseResult> CreateUser(UsuarioRegistroApiFinancas registroApiFinancas)
         {
             var userContent = new StringContent(
                 JsonSerializer.Serialize(registroApiFinancas),
                 Encoding.UTF8,
-                "application/json"); 
-            var response = await _httpClient.PostAsync(Url, userContent);
+                "application/json");
+            var api = _httpClientfactory.CreateClient("api.financas");
+            var response = await api.PostAsync(_apiFinancas.CreateUser, userContent);
             if (!response.IsSuccessStatusCode)
             {
                 return await DeserializarObjetoResponse<ResponseResult>(response);
