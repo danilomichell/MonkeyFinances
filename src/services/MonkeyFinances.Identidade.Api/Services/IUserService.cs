@@ -36,15 +36,13 @@ namespace MonkeyFinances.Identidade.Api.Services
             {
                 return await DeserializarObjetoResponse<ResponseResult>(response);
             }
-            if (response.IsSuccessStatusCode)
+
+            return new ResponseResult
             {
-                return new ResponseResult
-                {
-                    Status = 200,
-                    Title = "Success"
-                };
-            }
-            return await DeserializarObjetoResponse<ResponseResult>(response);
+                Status = 200,
+                Title = "Success"
+            };
+
         }
         protected async Task<T> DeserializarObjetoResponse<T>(HttpResponseMessage responseMessage)
         {
@@ -53,7 +51,7 @@ namespace MonkeyFinances.Identidade.Api.Services
                 PropertyNameCaseInsensitive = true
             };
 
-            return JsonSerializer.Deserialize<T>(await responseMessage.Content.ReadAsStringAsync(), options);
+            return JsonSerializer.Deserialize<T>(await responseMessage.Content.ReadAsStringAsync(), options)!;
         }
     }
 
