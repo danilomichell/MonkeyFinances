@@ -16,7 +16,10 @@ namespace MonkeyFinances.Financas.Api.Data.Mappings
                 .HasColumnType("varchar(100)");
             builder.Property(c => c.Email)
                     .IsRequired()
-                    .HasColumnType($"varchar(50)");
+                    .HasColumnType("varchar(50)");
+            builder.HasMany(c => c.Transacoes)
+                .WithOne(c => c.User)
+                .HasForeignKey(c => c.IdUser);
 
             builder.ToTable("Users");
         }
