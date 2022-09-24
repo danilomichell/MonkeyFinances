@@ -9,7 +9,7 @@ namespace MonkeyFinances.Core.Controller
     {
         protected ICollection<string> Erros = new List<string>();
 
-        protected ActionResult CustomResponse(object result = null)
+        protected ActionResult CustomResponse(object? result = null)
         {
             if (OperacaoValida())
             {

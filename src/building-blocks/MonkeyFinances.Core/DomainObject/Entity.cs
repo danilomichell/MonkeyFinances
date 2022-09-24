@@ -11,12 +11,12 @@ namespace MonkeyFinances.Core.DomainObject
             Id = Guid.NewGuid();
         }
 
-        private List<Event> _notificacoes;
-        public IReadOnlyCollection<Event> Notificacoes => _notificacoes?.AsReadOnly();
+        private List<Event>? _notificacoes;
+        public IReadOnlyCollection<Event>? Notificacoes => _notificacoes?.AsReadOnly();
 
         public void AdicionarEvento(Event evento)
         {
-            _notificacoes = _notificacoes ?? new List<Event>();
+            _notificacoes ??= new List<Event>();
             _notificacoes.Add(evento);
         }
 
@@ -32,7 +32,7 @@ namespace MonkeyFinances.Core.DomainObject
 
         #region Comparações
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var compareTo = obj as Entity;
 
@@ -42,7 +42,9 @@ namespace MonkeyFinances.Core.DomainObject
             return Id.Equals(compareTo.Id);
         }
 
+#pragma warning disable S3875 // "operator==" should not be overloaded on reference types
         public static bool operator ==(Entity a, Entity b)
+#pragma warning restore S3875 // "operator==" should not be overloaded on reference types
         {
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
                 return true;

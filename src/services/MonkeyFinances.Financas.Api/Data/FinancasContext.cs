@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MonkeyFinances.Core.Data;
 using MonkeyFinances.Core.DomainObject;
 using MonkeyFinances.Core.Mediator;
@@ -39,7 +40,7 @@ namespace MonkeyFinances.Financas.Api.Data
 
         public async Task<bool> Commit()
         {
-            var sucesso = await base.SaveChangesAsync() > 0;
+            var sucesso = await SaveChangesAsync() > 0;
             if (sucesso) await _mediatorHandler.PublicarEventos(this);
 
             return sucesso;
@@ -53,11 +54,12 @@ namespace MonkeyFinances.Financas.Api.Data
                 .Entries<Entity>()
                 .Where(x => x.Entity.Notificacoes != null && x.Entity.Notificacoes.Any());
 
-            var domainEvents = domainEntities
-                .SelectMany(x => x.Entity.Notificacoes)
+            var entityEntries = domainEntities as EntityEntry<Entity>[] ?? domainEntities.ToArray();
+            var domainEvents = entityEntries
+                .SelectMany(x => x.Entity.Notificacoes!)
                 .ToList();
 
-            domainEntities.ToList()
+            entityEntries.ToList()
                 .ForEach(entity => entity.Entity.LimparEventos());
 
             var tasks = domainEvents
