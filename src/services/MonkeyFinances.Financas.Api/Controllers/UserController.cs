@@ -26,7 +26,7 @@ public class UserController : MainController
         var resultado = await _mediatorHandler.EnviarComando(
             new CreateUserCommand(new Guid(user.Id), user.Nome, user.Email));
 
-        return CustomResponse(resultado);
+        return CustomResponse(true, resultado);
     }
     [AllowAnonymous]
     [HttpPost("obter-dados-usuario")]
@@ -35,6 +35,6 @@ public class UserController : MainController
         var resultado = await _mediatorHandler.EnviarComando(
             new ObterDadosUsuarioQuery("danilomichell@gmail.com"));
 
-        return CustomResponse(resultado);
+        return CustomResponse(true,resultado);
     }
 }

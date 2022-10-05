@@ -52,14 +52,14 @@ namespace MonkeyFinances.Identidade.Api.Controllers
                         Nome = usuarioRegistro.Nome
                     });
                 if (creteUser.Errors is null)
-                    return CustomResponse(await _tokenService.GerarJwt(usuarioRegistro.Email));
+                    return CustomResponse(false,await _tokenService.GerarJwt(usuarioRegistro.Email));
                 await _userManager.DeleteAsync(userCreated);
                 foreach (var error in creteUser.Errors.Mensagens)
                 {
                     AdicionarErroProcessamento(error);
                 }
 
-                return CustomResponse();
+                return CustomResponse(false);
             }
 
             foreach (var error in result.Errors)
@@ -67,7 +67,7 @@ namespace MonkeyFinances.Identidade.Api.Controllers
                 AdicionarErroProcessamento(error.Description);
             }
 
-            return CustomResponse();
+            return CustomResponse(false);
         }
 
         [HttpPost("autenticar")]
@@ -80,17 +80,17 @@ namespace MonkeyFinances.Identidade.Api.Controllers
 
             if (result.Succeeded)
             {
-                return CustomResponse(await _tokenService.GerarJwt(usuarioLogin.Email));
+                return CustomResponse(false,await _tokenService.GerarJwt(usuarioLogin.Email));
             }
 
             if (result.IsLockedOut)
             {
                 AdicionarErroProcessamento("Usuário temporariamente bloqueado por tentativas inválidas");
-                return CustomResponse();
+                return CustomResponse(false);
             }
 
             AdicionarErroProcessamento("Usuário ou Senha incorretos");
-            return CustomResponse();
+            return CustomResponse(false);
         }
     }
 }

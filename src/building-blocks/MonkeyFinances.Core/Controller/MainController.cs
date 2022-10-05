@@ -9,14 +9,14 @@ namespace MonkeyFinances.Core.Controller
     {
         protected ICollection<string> Erros = new List<string>();
 
-        protected ActionResult CustomResponse(object? result = null)
+        protected ActionResult CustomResponse(bool command, object? result = null)
         {
             if (!OperacaoValida())
                 return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]>
                 {
                     { "Mensagens", Erros.ToArray() }
                 }));
-            if (result == null) return Ok();
+            if (command) return Ok();
             return Ok(result);
 
         }
@@ -29,17 +29,17 @@ namespace MonkeyFinances.Core.Controller
                 AdicionarErroProcessamento(erro.ErrorMessage);
             }
 
-            return CustomResponse();
+            return CustomResponse(true);
         }
 
-        protected ActionResult CustomResponse(ValidationResult validationResult)
+        protected ActionResult CustomResponse(ValidationResult validationResult, bool command)
         {
             foreach (var erro in validationResult.Errors)
             {
                 AdicionarErroProcessamento(erro.ErrorMessage);
             }
 
-            return CustomResponse();
+            return command ? CustomResponse(true) : CustomResponse(false);
         }
 
         protected bool OperacaoValida()

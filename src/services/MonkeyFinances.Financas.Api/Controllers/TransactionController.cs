@@ -23,7 +23,7 @@ public class TransactionController : MainController
             new AddTransactionCommand(transaction.Email, transaction.Descricao, transaction.DataTransacao, transaction.Valor,
                 transaction.Tipo, transaction.NumParcela, transaction.TotalParcelas, transaction.FormaPagamento));
 
-        return CustomResponse(resultado);
+        return CustomResponse(true,resultado);
     }
 
 }
