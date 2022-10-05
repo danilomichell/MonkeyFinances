@@ -11,15 +11,14 @@ namespace MonkeyFinances.Core.Controller
 
         protected ActionResult CustomResponse(object? result = null)
         {
-            if (OperacaoValida())
-            {
-                return Ok(result);
-            }
+            if (!OperacaoValida())
+                return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]>
+                {
+                    { "Mensagens", Erros.ToArray() }
+                }));
+            if (result == null) return Ok();
+            return Ok(result);
 
-            return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]>
-            {
-                { "Mensagens", Erros.ToArray() }
-            }));
         }
 
         protected ActionResult CustomResponse(ModelStateDictionary modelState)

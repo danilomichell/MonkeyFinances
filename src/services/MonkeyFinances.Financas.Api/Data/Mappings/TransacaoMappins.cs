@@ -18,9 +18,6 @@ namespace MonkeyFinances.Financas.Api.Data.Mappings
             builder.Property(c => c.DataTransacao)
                 .IsRequired();
 
-            builder.HasOne(c => c.User)
-                .WithMany(c => c.Transacoes)
-                .HasForeignKey(c => c.IdUser);
             builder.HasOne(c => c.Tipo)
                 .WithMany(c => c.Transacoes)
                 .HasForeignKey(c => c.IdTipo);

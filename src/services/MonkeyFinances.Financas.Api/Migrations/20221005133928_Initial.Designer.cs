@@ -12,7 +12,7 @@ using MonkeyFinances.Financas.Api.Data;
 namespace MonkeyFinances.Financas.Api.Migrations
 {
     [DbContext(typeof(FinancasContext))]
-    [Migration("20220924185020_Initial")]
+    [Migration("20221005133928_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

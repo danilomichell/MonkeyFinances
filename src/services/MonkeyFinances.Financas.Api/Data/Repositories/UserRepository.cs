@@ -8,11 +8,11 @@ namespace MonkeyFinances.Financas.Api.Data.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        void Adicionar(User user);
-        void Update(User user);
+        void Adicionar(User user); 
         Task<User?> ObterPorEmail(string email);
         Task<Tipo?> ObterTipos(EnumTipo tipo);
         Task<FormaPagamento?> ObterFormaPagamento(EnumFormaPagamento tipo);
+        void AdicionarTransacao(Transacao transacao);
     }
     public class UserRepository : IUserRepository
     {
@@ -35,9 +35,9 @@ namespace MonkeyFinances.Financas.Api.Data.Repositories
             return await _context.Users.FirstOrDefaultAsync(x => x!.Email == email);
         }
 
-        public void Update(User user)
+        public void AdicionarTransacao(Transacao transacao)
         {
-            _context.Update(user);
+            _context.Transacaos.Add(transacao);
         }
 
         public async Task<Tipo?> ObterTipos(EnumTipo tipo)

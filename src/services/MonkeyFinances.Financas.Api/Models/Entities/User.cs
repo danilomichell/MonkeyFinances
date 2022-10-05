@@ -19,12 +19,12 @@ namespace MonkeyFinances.Financas.Api.Models.Entities
                 DataTransacao = dataTransacao,
                 Valor = valor,
                 Tipo = tipo,
-                Parcela = new Parcela
-                {
-                    NumParcela = numParcela,
-                    TotalParcelas = totalParcela,
-                    FormaPagamento = formaPagamento
-                }
+                //Parcela = new Parcela
+                //{
+                //    NumParcela = numParcela,
+                //    TotalParcelas = totalParcela,
+                //    FormaPagamento = formaPagamento
+                //}
             });
         }
     }

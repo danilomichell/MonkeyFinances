@@ -12,10 +12,7 @@ public class TipoMappings : IEntityTypeConfiguration<Tipo>
 
         builder.Property(c => c.Descricao)
             .IsRequired()
-            .HasColumnType("varchar(100)");
-        builder.HasMany(c => c.Transacoes)
-            .WithOne(c => c.Tipo)
-            .HasForeignKey(c => c.IdTipo);
+            .HasColumnType("varchar(100)"); 
 
         builder.ToTable("Tipos");
     }

@@ -2,6 +2,7 @@
 using MediatR;
 using MonkeyFinances.Core.Messages;
 using MonkeyFinances.Financas.Api.Data.Repositories;
+using MonkeyFinances.Financas.Api.Models.Entities;
 
 namespace MonkeyFinances.Financas.Api.Application.Commands.AddTransaction;
 
@@ -34,9 +35,21 @@ public class AddTransactionHandler : CommandHandler,
             AdicionarErro("Não existe essa forma de pagamento cadastrado");
             return ValidationResult;
         }
-        user.AddTransaction(request.Descricao, request.DataTransacao, request.Valor,
-            tipo, request.NumParcela, request.TotalParcelas, formaPagamento);
-        _userRepository.Update(user);
+        var transacao = new Transacao
+        {
+            IdUser = user.Id,
+            IdTipo = tipo.Id,
+            Valor = request.Valor,
+            Descricao = request.Descricao,
+            DataTransacao = request.DataTransacao,
+            Parcela = new Parcela
+            {
+                IdFormaPagamento = formaPagamento.Id,
+                NumParcela = request.NumParcela,
+                TotalParcelas = request.TotalParcelas
+            }
+        };
+        _userRepository.AdicionarTransacao(transacao);
         return await PersistirDados(_userRepository.UnitOfWork);
     }
 }

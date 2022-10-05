@@ -12,10 +12,7 @@ public class FormaPagamentoMappings : IEntityTypeConfiguration<FormaPagamento>
 
         builder.Property(c => c.Descricao)
             .IsRequired()
-            .HasColumnType("varchar(100)");
-        builder.HasMany(c => c.Parcelas)
-            .WithOne(c => c.FormaPagamento)
-            .HasForeignKey(c => c.IdFormaPagamento);
+            .HasColumnType("varchar(100)"); 
 
         builder.ToTable("FormaPagamentos");
     }

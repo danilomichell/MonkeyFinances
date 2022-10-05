@@ -2,7 +2,7 @@
 
 namespace MonkeyFinances.Financas.Api.Models.Enuns
 {
-    public enum EnumTipo
+    public enum EnumTipo 
     {
         [Description("Entrada")]
         Entrada = 1,

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MonkeyFinances.Core.Controller;
 using MonkeyFinances.Core.Mediator;
 using MonkeyFinances.Financas.Api.Application.Commands.AddTransaction;
@@ -14,7 +15,7 @@ public class TransactionController : MainController
     {
         _mediatorHandler = mediatorHandler;
     }
-
+    [AllowAnonymous]
     [HttpPut("adicionar-transacao")]
     public async Task<IActionResult> AddTransaction([FromBody] AddTransaction transaction)
     {

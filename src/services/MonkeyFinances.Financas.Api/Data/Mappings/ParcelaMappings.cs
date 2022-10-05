@@ -17,10 +17,7 @@ public class ParcelaMappings : IEntityTypeConfiguration<Parcela>
 
         builder.HasOne(c => c.FormaPagamento)
             .WithMany(c => c.Parcelas)
-            .HasForeignKey(c => c.IdFormaPagamento);
-        builder.HasOne(c => c.Transacao)
-            .WithOne(c => c.Parcela)
-            .HasForeignKey<Parcela>(c => c.IdTransacao);
+            .HasForeignKey(c => c.IdFormaPagamento); 
 
         builder.ToTable("Parcelas");
     }
