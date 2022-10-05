@@ -4,7 +4,7 @@ using MonkeyFinances.Core.Messages;
 using MonkeyFinances.Financas.Api.Data.Repositories;
 using MonkeyFinances.Financas.Api.Models.Entities;
 
-namespace MonkeyFinances.Financas.Api.Application.Commands
+namespace MonkeyFinances.Financas.Api.Application.Commands.CreateUser
 {
     public class CreateUserHandler : CommandHandler,
         IRequestHandler<CreateUserCommand, ValidationResult>

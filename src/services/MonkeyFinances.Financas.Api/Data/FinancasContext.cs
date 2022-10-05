@@ -21,7 +21,7 @@ namespace MonkeyFinances.Financas.Api.Data
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
-        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<User?> Users { get; set; } = null!;
         public DbSet<Transacao> Transacaos { get; set; } = null!;
         public DbSet<FormaPagamento> FormaPagamentos { get; set; } = null!;
         public DbSet<Parcela> Parcelas { get; set; } = null!;

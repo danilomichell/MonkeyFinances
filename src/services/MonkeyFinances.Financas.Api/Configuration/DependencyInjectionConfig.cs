@@ -1,7 +1,7 @@
 ﻿using FluentValidation.Results;
 using MediatR;
 using MonkeyFinances.Core.Mediator;
-using MonkeyFinances.Financas.Api.Application.Commands;
+using MonkeyFinances.Financas.Api.Application.Commands.CreateUser;
 using MonkeyFinances.Financas.Api.Data;
 using MonkeyFinances.Financas.Api.Data.Repositories;
 

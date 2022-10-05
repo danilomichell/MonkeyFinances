@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MonkeyFinances.Core.Messages;
 
-namespace MonkeyFinances.Financas.Api.Application.Commands
+namespace MonkeyFinances.Financas.Api.Application.Commands.CreateUser
 {
     public class CreateUserCommand : Command
     {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MonkeyFinances.Core;
 using MonkeyFinances.Financas.Api.Data;
 
 namespace MonkeyFinances.Financas.Api.Configuration
@@ -10,7 +11,7 @@ namespace MonkeyFinances.Financas.Api.Configuration
             services.AddDbContext<FinancasContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
+            services.AddControllers().AddCustomJsonOptions();
 
             services.AddCors(options =>
             {
