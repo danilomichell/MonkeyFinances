@@ -4,6 +4,7 @@ using MonkeyFinances.Core.Controller;
 using MonkeyFinances.Core.Exception;
 using MonkeyFinances.Core.Mediator;
 using MonkeyFinances.Financas.Api.Application.Commands.CreateUser;
+using MonkeyFinances.Financas.Api.Application.Queries;
 using MonkeyFinances.Financas.Api.Models;
 
 namespace MonkeyFinances.Financas.Api.Controllers;
@@ -24,6 +25,15 @@ public class UserController : MainController
     {
         var resultado = await _mediatorHandler.EnviarComando(
             new CreateUserCommand(new Guid(user.Id), user.Nome, user.Email));
+
+        return CustomResponse(resultado);
+    }
+    [AllowAnonymous]
+    [HttpPost("obter-dados-usuario")]
+    public async Task<IActionResult> GetUser()
+    {
+        var resultado = await _mediatorHandler.EnviarComando(
+            new ObterDadosUsuarioQuery("danilomichell@gmail.com"));
 
         return CustomResponse(resultado);
     }
