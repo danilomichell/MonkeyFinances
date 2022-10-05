@@ -16,24 +16,25 @@ namespace MonkeyFinances.Financas.Api.Data
         public FinancasContext(DbContextOptions<FinancasContext> options, IMediatorHandler mediatorHandler)
             : base(options)
         {
-            _mediatorHandler = mediatorHandler;
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-            ChangeTracker.AutoDetectChangesEnabled = false;
+            _mediatorHandler = mediatorHandler; 
         }
 
-        public DbSet<User?> Users { get; set; } = null!;
-        public DbSet<Transacao> Transacaos { get; set; } = null!;
-        public DbSet<FormaPagamento> FormaPagamentos { get; set; } = null!;
-        public DbSet<Parcela> Parcelas { get; set; } = null!;
-        public DbSet<Tipo> Tipos { get; set; } = null!;
+        public DbSet<User> Users { get; set; } 
+        public DbSet<Transacao> Transacaos { get; set; }
+        public DbSet<FormaPagamento> FormaPagamentos { get; set; } 
+        public DbSet<Tipo> Tipos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<ValidationResult>();
             modelBuilder.Ignore<Event>();
+
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
                          e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
                 property.SetColumnType("varchar(100)");
+
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes()
+                         .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(FinancasContext).Assembly);
         }

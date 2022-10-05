@@ -2,7 +2,7 @@
 
 namespace MonkeyFinances.Financas.Api.Models
 {
-    public class AddTransaction
+    public class AddTransactionModel
     {
         public string Email { get; set; }
         public string Descricao { get; set; }
@@ -12,5 +12,11 @@ namespace MonkeyFinances.Financas.Api.Models
         public int NumParcela { get; set; }
         public int TotalParcelas { get; set; }
         public EnumFormaPagamento FormaPagamento { get; set; }
+    }
+
+    public class RemoveTransactionModel
+    {
+        public Guid IdTransacao { get; set; }
+        public string Email { get; set; }
     }
 }

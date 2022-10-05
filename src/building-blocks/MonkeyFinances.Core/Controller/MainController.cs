@@ -32,7 +32,7 @@ namespace MonkeyFinances.Core.Controller
             return CustomResponse(true);
         }
 
-        protected ActionResult CustomResponse(ValidationResult validationResult, bool command)
+        protected ActionResult CustomResponse(bool command,ValidationResult validationResult)
         {
             foreach (var erro in validationResult.Errors)
             {

@@ -3,6 +3,7 @@ using MediatR;
 using MonkeyFinances.Core.Mediator;
 using MonkeyFinances.Financas.Api.Application.Commands.AddTransaction;
 using MonkeyFinances.Financas.Api.Application.Commands.CreateUser;
+using MonkeyFinances.Financas.Api.Application.Commands.RemoveTransaction;
 using MonkeyFinances.Financas.Api.Application.Queries;
 using MonkeyFinances.Financas.Api.Data;
 using MonkeyFinances.Financas.Api.Data.Repositories;
@@ -15,8 +16,8 @@ namespace MonkeyFinances.Financas.Api.Configuration
         {
             services.AddScoped<IMediatorHandler, MediatorHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, ValidationResult>, CreateUserHandler>();
-            services.AddScoped<IRequestHandler<AddTransactionCommand, ValidationResult>, AddTransactionHandler>();
-            services.AddScoped<IRequestHandler<ObterDadosUsuarioQuery, ValidationResult>, ObterDadosUsuarioHandler>();
+            services.AddScoped<IRequestHandler<AddTransactionCommand, ValidationResult>, AddTransactionHandler>(); 
+            services.AddScoped<IRequestHandler<RemoveTransactionCommand, ValidationResult>, RemoveTransactionHandler>(); 
 
             //services.AddScoped<INotificationHandler<CreateUserEvent>, ClienteEventHandler>();
 

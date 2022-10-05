@@ -35,21 +35,18 @@ public class AddTransactionHandler : CommandHandler,
             AdicionarErro("Não existe essa forma de pagamento cadastrado");
             return ValidationResult;
         }
-        var transacao = new Transacao
-        {
-            IdUser = user.Id,
-            IdTipo = tipo.Id,
-            Valor = request.Valor,
-            Descricao = request.Descricao,
-            DataTransacao = request.DataTransacao,
-            Parcela = new Parcela
-            {
-                IdFormaPagamento = formaPagamento.Id,
-                NumParcela = request.NumParcela,
-                TotalParcelas = request.TotalParcelas
-            }
-        };
-        _userRepository.AdicionarTransacao(transacao);
+        _userRepository.AdicionarTransacao(new Transacao
+        (
+            descricao: request.Descricao,
+            tipo: tipo,
+            valor: request.Valor,
+            dataTransacao: request.DataTransacao,
+            user: user,
+            numParcela: request.NumParcela,
+            totalParcelas: request.TotalParcelas,
+            formaPagamento: formaPagamento
+        ));
+
         return await PersistirDados(_userRepository.UnitOfWork);
     }
 }

@@ -34,32 +34,7 @@ namespace MonkeyFinances.Financas.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FormaPagamentos", (string)null);
-                });
-
-            modelBuilder.Entity("MonkeyFinances.Financas.Api.Models.Entities.Parcela", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdFormaPagamento")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdTransacao")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("NumParcela")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalParcelas")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdFormaPagamento");
-
-                    b.ToTable("Parcelas", (string)null);
+                    b.ToTable("FormaPagamentos");
                 });
 
             modelBuilder.Entity("MonkeyFinances.Financas.Api.Models.Entities.Tipo", b =>
@@ -74,7 +49,7 @@ namespace MonkeyFinances.Financas.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tipos", (string)null);
+                    b.ToTable("Tipos");
                 });
 
             modelBuilder.Entity("MonkeyFinances.Financas.Api.Models.Entities.Transacao", b =>
@@ -90,13 +65,23 @@ namespace MonkeyFinances.Financas.Api.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
-                    b.Property<Guid>("IdParcela")
+                    b.Property<Guid>("FormaPagamentoId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdTipo")
+                    b.Property<string>("NumParcela")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<Guid>("ParcelaId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdUser")
+                    b.Property<Guid>("TipoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TotalParcelas")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Valor")
@@ -104,14 +89,13 @@ namespace MonkeyFinances.Financas.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdParcela")
-                        .IsUnique();
+                    b.HasIndex("FormaPagamentoId");
 
-                    b.HasIndex("IdTipo");
+                    b.HasIndex("TipoId");
 
-                    b.HasIndex("IdUser");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Transacoes", (string)null);
+                    b.ToTable("Transacaos");
                 });
 
             modelBuilder.Entity("MonkeyFinances.Financas.Api.Models.Entities.User", b =>
@@ -133,38 +117,24 @@ namespace MonkeyFinances.Financas.Api.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("MonkeyFinances.Financas.Api.Models.Entities.Parcela", b =>
-                {
-                    b.HasOne("MonkeyFinances.Financas.Api.Models.Entities.FormaPagamento", "FormaPagamento")
-                        .WithMany("Parcelas")
-                        .HasForeignKey("IdFormaPagamento")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FormaPagamento");
-                });
-
             modelBuilder.Entity("MonkeyFinances.Financas.Api.Models.Entities.Transacao", b =>
                 {
-                    b.HasOne("MonkeyFinances.Financas.Api.Models.Entities.Parcela", "Parcela")
-                        .WithOne("Transacao")
-                        .HasForeignKey("MonkeyFinances.Financas.Api.Models.Entities.Transacao", "IdParcela")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("MonkeyFinances.Financas.Api.Models.Entities.FormaPagamento", "FormaPagamento")
+                        .WithMany("Transacaos")
+                        .HasForeignKey("FormaPagamentoId")
                         .IsRequired();
 
                     b.HasOne("MonkeyFinances.Financas.Api.Models.Entities.Tipo", "Tipo")
                         .WithMany("Transacoes")
-                        .HasForeignKey("IdTipo")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("TipoId")
                         .IsRequired();
 
                     b.HasOne("MonkeyFinances.Financas.Api.Models.Entities.User", "User")
                         .WithMany("Transacoes")
-                        .HasForeignKey("IdUser")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("UserId")
                         .IsRequired();
 
-                    b.Navigation("Parcela");
+                    b.Navigation("FormaPagamento");
 
                     b.Navigation("Tipo");
 
@@ -173,13 +143,7 @@ namespace MonkeyFinances.Financas.Api.Migrations
 
             modelBuilder.Entity("MonkeyFinances.Financas.Api.Models.Entities.FormaPagamento", b =>
                 {
-                    b.Navigation("Parcelas");
-                });
-
-            modelBuilder.Entity("MonkeyFinances.Financas.Api.Models.Entities.Parcela", b =>
-                {
-                    b.Navigation("Transacao")
-                        .IsRequired();
+                    b.Navigation("Transacaos");
                 });
 
             modelBuilder.Entity("MonkeyFinances.Financas.Api.Models.Entities.Tipo", b =>

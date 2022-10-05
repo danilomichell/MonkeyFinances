@@ -19,11 +19,11 @@ namespace MonkeyFinances.Financas.Api.Application.Commands.CreateUser
         {
             if (!request.EhValido()) return request.ValidationResult;
             var user = new User
-            {
-                Id = request.Id,
-                Email = request.Email,
-                Name = request.Nome
-            };
+            (
+                id: request.Id,
+                email: request.Email,
+                name: request.Nome
+            );
             _userRepository.Adicionar(user);
             //user.AdicionarEvento(new User);
             return await PersistirDados(_userRepository.UnitOfWork);
